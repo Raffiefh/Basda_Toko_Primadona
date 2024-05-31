@@ -1,10 +1,8 @@
-# import psycopg2
+import psycopg2
 
-# conn = psycopg2.connect(database='proyekbasda',user='postgres', password='Raffi20005..', host='localhost', port=5432)
+conn = psycopg2.connect(database='Primadona',user='postgres', password='Raffi20005..', host='localhost', port=5432)
 
-# cur = conn.cursor()
-# # Mengimport CSV
-import csv
+cur = conn.cursor()
 # # Mengimport sistem fitur Clear()
 import os
 # # Mengimport pandas 
@@ -46,7 +44,7 @@ def Halaman_admin():
     print(" ==      WEBSITE TOKO PRIMADONA JEMBER KHUSUS ADMIN        == ")
     print(" ==                                                        == ")
     print(" ============================================================ ")
-    print(" ==  [1]   AKUN USER                                            == ")
+    print(" ==  [1]   AKUN USER                                       == ")
     print(" ==  [2]   ADMIN                                           == ")
     print(" ==  [3]                                                   == ")
     print(" ==  [3]   OUT                                             == ")
@@ -59,7 +57,8 @@ def Login():
     Clear()  
     print(" ============================================================ ")
     print(" ==                                                        == ")
-    print(" ==                       MENU LOGIN                       == ")
+    print(" ==         █▀▄▀█ █▀▀ █▄░█ █░█   █░░ █▀█ █▀▀ █ █▄░█        == ")
+    print(" ==         █░▀░█ ██▄ █░▀█ █▄█   █▄▄ █▄█ █▄█ █ █░▀█        == ")
     print(" ==                                                        == ")
     print(" ============================================================ ")
     print(" ==  [1]   USER                                            == ")
@@ -69,23 +68,25 @@ def Login():
     Masuk = input("Pilihlah akun kamu :  ")
     if Masuk == "1" :
         Clear()
-        print(" ============================================================ ")
-        print(" ==                                                        == ")
-        print(" ==                   MENU LOGIN USER                      == ")
-        print(" ==                                                        == ")
-        print(" ============================================================ ")
         def Masuk_Login() :
             Clear()
-            # username=input("Masukkan Username anda : ")
-            # password=input("Masukkan password anda : ")
-            # query = f"SELECT * FROM customers WHERE username_customer AND password_customer"
-            # cur.execute(query, (username, password))
-            # user = cur.fetchone()
-            # if user in query:
-            #     Clear()
-            #     print("Mantab")
-            # else:
-            #     print("Anda salah")
+            print(" ============================================================ ")
+            print(" ==                                                        == ")
+            print(" ==           █░░ █▀█ █▀▀ █ █▄░█   █░█ █▀ █▀▀ █▀█          == ")
+            print(" ==           █▄▄ █▄█ █▄█ █ █░▀█   █▄█ ▄█ ██▄ █▀▄          == ")
+            print(" ==                                                        == ")
+            print(" ============================================================ ")
+            username=input("Masukkan Username anda : ")
+            password=input("Masukkan password anda : ")
+            query = f"SELECT * FROM customers WHERE username_customer AND password_customer"
+            cur.execute(query, (username, password))
+            user = cur.fetchone()
+            if user in query:
+                Clear()
+                print(" === Selamat datang di Toko Primadona Jember === ")
+            else:
+                print("Anda salah")
+        Masuk_Login()
                 
         Halaman_user()
     elif Masuk == "2" :
@@ -98,6 +99,12 @@ def Login():
         print("Ketikkan sesuai perintah untuk dijalankan terlebih dahulu ")
         Login()
 def Register():
+    Clear()
+    print(" ============================================================ ")
+    print(" ==                                                        == ")
+    print(" ==    █▀▄▀█ █▀▀ █▄░█ █░█   █▀█ █▀▀ █▀▀ █ █▀ ▀█▀ █▀▀ █▀█   == ")
+    print(" ==    █░▀░█ ██▄ █░▀█ █▄█   █▀▄ ██▄ █▄█ █ ▄█ ░█░ ██▄ █▀▄   == ")
+    print(" ==                                                        == ")
     print(" ============================================================ ")
     print(" ==                     MENU REGISTER                      == ")
     print(" ==    Selamat datang di menu register  Primadona Jember   == ")
@@ -121,21 +128,29 @@ def Register():
 def Register_Login ():
     while True:
         Clear()
-        print(" ============================================================= ")
-        print(" ==                                                         == ")
-        print(" == 🛒 SELAMAT DATANG DI WEBSITE TOKO PRIMADONA JEMBER 🧁  == ")
-        print(" ==                                                         == ")
-        print(" == disini kami menyediakan produk oleh-oleh jember yang    == ")
-        print(" == dapat kamu pesan dari rumah                             == ")
-        print(" ==                                                         == ")
-        print(" ==                                         [📧][📦][☎️ ]  == ")
-        print(" =============================================================")
-        print(" ==  [1]   LOGIN                                            ==")
-        print(" ==  [2]   REGISTER                                         ==")
-        print(" ==  [3]   OUT                                              ==")
-        print(" ==  Masukkan berdasarkan angkanya                          ==")
-        print(" =============================================================")
-        Masuk = input("Sebelum berbelanja ayo joinkan akun  kamu :  ")
+        print("")
+        print("████████╗░█████╗░██╗░░██╗░█████╗░  ██████╗░██████╗░██╗███╗░░░███╗░█████╗░██████╗░░█████╗░███╗░░██╗░█████╗░")
+        print("╚══██╔══╝██╔══██╗██║░██╔╝██╔══██╗  ██╔══██╗██╔══██╗██║████╗░████║██╔══██╗██╔══██╗██╔══██╗████╗░██║██╔══██╗")
+        print("░░░██║░░░██║░░██║█████═╝░██║░░██║  ██████╔╝██████╔╝██║██╔████╔██║███████║██║░░██║██║░░██║██╔██╗██║███████║")
+        print("░░░██║░░░██║░░██║██╔═██╗░██║░░██║  ██╔═══╝░██╔══██╗██║██║╚██╔╝██║██╔══██║██║░░██║██║░░██║██║╚████║██╔══██║")
+        print("   ██║░░░╚█████╔╝██║░╚██╗╚█████╔╝  ██║░░░░░██║░░██║██║██║░╚═╝░██║██║░░██║██████╔╝╚█████╔╝██║░╚███║██║░░██║")
+        print("   ╚═╝░░░░╚════╝░╚═╝░░╚═╝░╚════╝░  ╚═╝░░░░░╚═╝░░╚═╝╚═╝╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░╚═╝")
+        print("")
+        print("                         ============================================================= ")
+        print("                         ==                                                         == ")
+        print("                         == 🛒 SELAMAT DATANG DI WEBSITE TOKO PRIMADONA JEMBER 🧁   == ")
+        print("                         ==                                                         == ")
+        print("                         == disini kami menyediakan produk oleh-oleh jember yang    == ")
+        print("                         == dapat kamu pesan dari rumah                             == ")
+        print("                         ==                                                         == ")
+        print("                         ==                                         [📧][📦][☎️ ]    == ")
+        print("                         =============================================================")
+        print("                         ==  [1]   LOGIN                                            ==")
+        print("                         ==  [2]   REGISTER                                         ==")
+        print("                         ==  [3]   OUT                                              ==")
+        print("                         ==  Masukkan berdasarkan angkanya                          ==")
+        print("                         =============================================================")
+        Masuk = input("                         Sebelum berbelanja, ayo joinkan akun  kamu :  ")
         if Masuk == "1" :
             Clear()
             Login()
@@ -143,8 +158,9 @@ def Register_Login ():
             Register()
         elif Masuk == "3" :
             Clear()
+            break
         else:
             Clear()
-            ("Lakukan sesuai perintah terlebih dahulu ")
+            print("Lakukan sesuai perintah terlebih dahulu ")
             Register_Login()
 Register_Login()
