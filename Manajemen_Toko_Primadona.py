@@ -24,7 +24,6 @@ def Clear():
         os.system("cls")
         
 def Halaman_user():
-    Clear()
     print(" ============================================================ ")
     print(" ==                                                        == ")
     print(" ==            WEBSITE TOKO PRIMADONA JEMBER               == ")
@@ -40,9 +39,28 @@ def Halaman_user():
     print(" ==  [3]   Riwayat Pembelian                               == ")
     print(" ==  [4]   Searching produk                                == ")
     print(" ==  [5]   Profil                                          == ")
+    print(" ==  [6]   Feedback                                        == ")
     print(" ==  [0]   OUT                                             == ")
+    print(" ==  [ Masukkan nilai berdasarkan angka ]                  == ")
     print(" ============================================================ ")
-    
+    Masuk = input(" == masuk ke bagian mana")
+    if Masuk == "1":
+        pass
+    elif Masuk == "2":
+        pass
+    elif Masuk == "3":
+        pass
+    elif Masuk == "4":
+        pass
+    elif Masuk == "5":
+        pass
+    elif Masuk == "0":
+        Clear()
+    else :
+        Clear()
+        print("Masukkan data dengan benar")
+        Halaman_user()
+        
 def Halaman_admin():
     Clear()
     print(" ============================================================ ")
@@ -50,12 +68,12 @@ def Halaman_admin():
     print(" ==      WEBSITE TOKO PRIMADONA JEMBER KHUSUS ADMIN        == ")
     print(" ==                                                        == ")
     print(" ============================================================ ")
-    print(" ==  [1]   AKUN USER                                       == ")
-    print(" ==  [2]   ADMIN                                           == ")
-    print(" ==  [3]                                                   == ")
-    print(" ==  [3]   OUT                                             == ")
-    print(" ==  [3]   OUT                                             == ")
-    print(" ==  [3]   OUT                                             == ")
+    print(" ==  [1]   Menambahkan dan Update produk                   == ")
+    print(" ==  [2]   Melihat pembelian dan Update pesanan            == ")
+    print(" ==  [3]   Mengubah produk                                 == ")
+    print(" ==  [4]   Menghapus bagian produk                         == ")
+    print(" ==  [5]   Melihat riwayat pembelian                       == ")
+    print(" ==  [6]   OUT                                             == ")
     print(" ============================================================ ")
     
     
