@@ -6,7 +6,7 @@ from datetime import datetime
 now = datetime.now()
 date_time = now.strftime("%Y-%m-%d")
 
-conn = psycopg2.connect(database='Primadona',user='postgres', password='Raffi20005..', host='localhost', port=5432)
+conn = psycopg2.connect(database='Toko_Primadona',user='postgres', password='Raffi20005..', host='localhost', port=5432)
 cur = conn.cursor()
 
 # # Mengimport sistem fitur Clear()
@@ -29,10 +29,13 @@ def Halaman_user():
     print(" ==            WEBSITE TOKO PRIMADONA JEMBER               == ")
     print(" ==                                                        == ")
     print(" ============================================================ ")
-    print(" ==                                                        == ")
-    print(" ==                                                        == ")
-    print(" ==                                                        == ")
-    print(" ==                                                        == ")
+    mytable =PrettyTable([" Nama produk ", " Harga produk ", "EXP", "Jenis produk"])
+    query = "select p.produk, p.harga, TO_CHAR(p.kadaluarsa :: DATE,'dd-mm-yyyy'), jp.jenis_produk from produk p join jenis_produk jp on (p.id_jenis_produk = jp.id_jenis_produk) where p.ketersediaan_produk = '1'"
+    cur.execute(query)
+    data = cur.fetchall()
+    for i in data:
+        mytable.add_row(i)
+    print( mytable )
     print(" ============================================================ ")
     print(" ==  [1]   Order produk                                    == ")
     print(" ==  [2]   Membeli pre order                               == ")
@@ -92,27 +95,27 @@ def Login():
     Masuk = input("Pilihlah akun kamu :  ")
     if Masuk == "1" :
         Clear()
-        def Masuk_Login() :
-            Clear()
-            print(" \u001b[31m============================================================ ")
-            print(" ==                                                        == ")
-            print(" ==           █░░ █▀█ █▀▀ █ █▄░█   █░█ █▀ █▀▀ █▀█          == ")
-            print(" ==           █▄▄ █▄█ █▄█ █ █░▀█   █▄█ ▄█ ██▄ █▀▄          == ")
-            print(" ==                                                        == ")
-            print(" ============================================================\u001b[0m ")
-            username=input("Masukkan Username anda : ")
-            password=input("Masukkan password anda : ")
-            query = f"SELECT * FROM customers WHERE username_customer AND password_customer"
-            cur.execute(query, (username, password))
-            user = cur.fetchone()
-            if user in query:
-                Clear()
-                print(" === Selamat datang di Toko Primadona Jember === ")
-            else:
-                print("Anda salah")
-        Masuk_Login()
-                
         Halaman_user()
+        # def Masuk_Login() :
+            # Clear()
+            # print(" \u001b[31m============================================================ ")
+            # print(" ==                                                        == ")
+            # print(" ==           █░░ █▀█ █▀▀ █ █▄░█   █░█ █▀ █▀▀ █▀█          == ")
+            # print(" ==           █▄▄ █▄█ █▄█ █ █░▀█   █▄█ ▄█ ██▄ █▀▄          == ")
+            # print(" ==                                                        == ")
+            # print(" ============================================================\u001b[0m ")
+            # username=input("Masukkan Username anda : ")
+            # password=input("Masukkan password anda : ")
+            # query = f"SELECT * FROM customer WHERE nama_customer AND password_customer"
+            # cur.execute(query, (username, password))
+            # user = cur.fetchone()
+            # if user in query:
+            #     Clear()
+            #     print(" === Selamat datang di Toko Primadona Jember === ")
+            # else:
+            #     print("Anda salah")
+        # Masuk_Login()
+
     elif Masuk == "2" :
         Halaman_admin() 
     elif Masuk == "3" :
