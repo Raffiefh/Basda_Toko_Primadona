@@ -29,6 +29,12 @@ def Halaman_user():
     print(" ==            WEBSITE TOKO PRIMADONA JEMBER               == ")
     print(" ==                                                        == ")
     print(" ============================================================ ")
+    query = "select TO_CHAR(NOW(),'Tanggal : [ DD-MM-YYYY ],             [  HH.MI  ]') from produk limit 1"
+    cur.execute(query)
+    data = cur.fetchall()
+    for i in (data):
+        print(f" == {i} ==")
+    print(" ============================================================ ")
     mytable =PrettyTable([" Nama produk ", " Harga produk ", "EXP", "Jenis produk"])
     query = "select p.produk, p.harga, TO_CHAR(p.kadaluarsa :: DATE,'dd-mm-yyyy'), jp.jenis_produk from produk p join jenis_produk jp on (p.id_jenis_produk = jp.id_jenis_produk) where p.ketersediaan_produk = '1'"
     cur.execute(query)
@@ -177,7 +183,7 @@ def Register_Login ():
         print("                         ==  [3]   OUT                                              ==")
         # print("                         ==  Masukkan berdasarkan angkanya                          ==")
         print("                         =============================================================\u001b[0;5;166m")
-        Masuk = input("                         Sebelum berbelanja, ayo joinkan akun  kamu :  ")
+        Masuk = input("                         Sebelum berbelanja, ayo joinkan akun kamu :  ")
         if Masuk == "1" :
             Clear()
             Login()
