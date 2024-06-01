@@ -50,9 +50,9 @@ def Halaman_user():
     print(" ==  [5]   Profil                                          == ")
     print(" ==  [6]   Feedback                                        == ")
     print(" ==  [0]   OUT                                             == ")
-    print(" ==  [ Masukkan nilai berdasarkan angka ]                  == ")
+    print(" ==  [ Untuk masuk inputkan berdasarkan angka ]            == ")
     print(" ============================================================ ")
-    Masuk = input(" == masuk ke bagian mana")
+    Masuk = input(" == Halaman masuk :")
     if Masuk == "1":
         pass
     elif Masuk == "2":
@@ -67,15 +67,20 @@ def Halaman_user():
         Clear()
     else :
         Clear()
-        print("Masukkan data dengan benar")
+        print("Harap menginputkan data dengan benar")
         Halaman_user()
         
 def Halaman_admin():
-    Clear()
     print(" ============================================================ ")
     print(" ==                                                        == ")
     print(" ==      WEBSITE TOKO PRIMADONA JEMBER KHUSUS ADMIN        == ")
     print(" ==                                                        == ")
+    print(" ============================================================ ")
+    query = "select count(produk) from produk where ketersediaan_produk = '1' limit 1"
+    cur.execute(query)
+    data = cur.fetchall()
+    for i in (data):
+        print(f" == Produk yang dijual hari ini {i} ")
     print(" ============================================================ ")
     print(" ==  [1]   Menambahkan dan Update produk                   == ")
     print(" ==  [2]   Melihat pembelian dan Update pesanan            == ")
@@ -84,7 +89,23 @@ def Halaman_admin():
     print(" ==  [5]   Melihat riwayat pembelian                       == ")
     print(" ==  [6]   OUT                                             == ")
     print(" ============================================================ ")
-    
+    Masuk = input(" == Halaman masuk :")
+    if Masuk == "1":
+        pass
+    elif Masuk == "2":
+        pass
+    elif Masuk == "3":
+        pass
+    elif Masuk == "4":
+        pass
+    elif Masuk == "5":
+        pass
+    elif Masuk == "0":
+        Clear()
+    else :
+        Clear()
+        print("Harap menginputkan data dengan benar")
+        Halaman_user()
     
 def Login():
     Clear()  
@@ -123,6 +144,7 @@ def Login():
         # Masuk_Login()
 
     elif Masuk == "2" :
+        Clear()
         Halaman_admin() 
     elif Masuk == "3" :
         Clear()
