@@ -237,7 +237,7 @@ def Login():
     print(" ==         █░▀░█ ██▄ █░▀█ █▄█   █▄▄ █▄█ █▄█ █ █░▀█        == ")
     print(" ==                                                        == ")
     print(" ============================================================\u001b[0m ")
-    print(" ==  [1]   USER                                            == ")
+    print(" ==  [1]   CUSTOMER                                        == ")
     print(" ==  [2]   ADMIN                                           == ")
     print(" ==  [3]   OUT                                             == ")
     print(" ============================================================ ")
@@ -247,8 +247,8 @@ def Login():
         def Masuk_Login() :
             print(" \u001b[31m============================================================ ")
             print(" ==                                                        == ")
-            print(" ==           █░░ █▀█ █▀▀ █ █▄░█   █░█ █▀ █▀▀ █▀█          == ")
-            print(" ==           █▄▄ █▄█ █▄█ █ █░▀█   █▄█ ▄█ ██▄ █▀▄          == ")
+            print(" ==  █░░ █▀█ █▀▀ █ █▄░█   █▀▀ █░█ █▀ ▀█▀ █▀█ █▀▄▀█ █▀▀ █▀█ == ")
+            print(" ==  █▄▄ █▄█ █▄█ █ █░▀█   █▄▄ █▄█ ▄█ ░█░ █▄█ █░▀░█ ██▄ █▀▄ ==")
             print(" ==                                                        == ")
             print(" ============================================================\u001b[0m ")
             username = input("Masukkan Username anda : ")
@@ -301,9 +301,9 @@ def Login():
         print("Ketikkan sesuai perintah untuk dijalankan terlebih dahulu ")
         Login()
 def Register_Customer():
-    input_nama = input("Masukkan username anda : ")
+    input_nama = input("Masukkan nama anda : ")
     input_pw = input("Masukkan password anda : ")
-    input_no_telefon = input("Masukkan nomor telefon anda : ")
+    input_no_telefon = input("Masukkan nomor telepon anda : ")
     input_alamat = input("Masukkan alamat anda : ")
 
     query = "SELECT * FROM customer WHERE nama_customer = %s OR no_telepon = %s"
