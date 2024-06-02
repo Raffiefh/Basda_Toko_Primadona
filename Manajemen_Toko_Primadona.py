@@ -30,6 +30,9 @@ def Clear():
     elif platform.system() == "Windows":
         os.system("cls")
         ## Halaman User
+        
+## Halaman User 
+
 def Halaman_user():
     print(" ============================================================ ")
     print(" ==                                                        == ")
@@ -60,56 +63,80 @@ def Halaman_user():
     print(" ============================================================ ")
     Masuk = input(" == Halaman masuk :")
     if Masuk == "1":
-        Clear()
-        # def Order_produk():
-        #     print(" ============================================================ ")
-        #     query = "select TO_CHAR(NOW(),'Tanggal : [ DD-MM-YYYY ],             [  HH.MI  ]') from produk limit 1"
-        #     cur.execute(query)
-        #     data = cur.fetchall()
-        #     for i in (data):
-        #         print(f" == {i} ==")
-        #     print(" ============================================================ ")
-        #     mytable =PrettyTable(["Nomor produk"," Nama produk ", " Harga produk ", "EXP", "Jenis produk"])
-        #     query = "select p.id_produk,p.produk, p.harga, TO_CHAR(p.kadaluarsa :: DATE,'dd-mm-yyyy'), jp.jenis_produk from produk p join jenis_produk jp on (p.id_jenis_produk = jp.id_jenis_produk) where p.ketersediaan_produk = '1'"
-        #     cur.execute(query)
-        #     data = cur.fetchall()
-        #     for i in data:
-        #         mytable.add_row(i)
-        #     print( mytable )
-        #     print(" ==================== MACAM VARIAN ========================== ")
-        #     mytable =PrettyTable(["Id Varian produk"," Varian produk "])
-        #     query = "select id_varian_produk, varian_produk from varian_produk "
-        #     cur.execute(query)
-        #     data = cur.fetchall()
-        #     for i in data:
-        #         mytable.add_row(i)
-        #     print(mytable)
-        #     print(" =================== MACAM PEMBAYARAN =======================")
-        #     mytable =PrettyTable(["Nomor Jenis Pembayaran"," Jenis Pembayaran "])
-        #     query = "select id_detail_order, varian_produk from varian_produk "
-        #     cur.execute(query)
-        #     data = cur.fetchall()
-        #     for i in data:
-        #         mytable.add_row(i)
-        #     print(mytable)
-        #     print(" ============================================================ ")
-            # Ingin_Beli=input("Apakah kamu ingin beli [Y][T]: ")
-            # if Ingin_Beli == "Y":
-            #     try :
-                        
-            #             Clear()
-            #             print(" Anda berhasil menambahkan produk")
-            #             Halaman_admin()
-            #     except:
-            #             Clear()
-            #             print("Mohon maaf data yang anda inputkan salah")
-            #             Halaman_admin()
-            # elif Ingin_Beli == "T":
-            #     Clear()
-            #     Halaman_user()
-            # else :
-            #     Clear()
-            #     Order_produk()
+        print(" ============================================================ ")
+        print(" ==  [1]   Order produk                                    == ")
+        print(" ==  [2]   Hapus Order                                     == ")
+        print(" ============================================================ ")
+        Masuk2 = input("== Halaman masuk ==")
+        if Masuk2 == "1":
+            Clear()
+            def tambah_preorder(cur, conn):
+                query = "SELECT id_admin, id_customer, id_jenis_pembayaran, tanggal_pre_order, no_antrian_pre_order, catatan_pesanan, id_status_pesanan FROM pre_order"
+                cur.execute(query)
+                data = cur.fetchall()
+
+                table = PrettyTable()
+                table.field_names = ["id_admin", "id_customer", "id_jenis_pembayaran", "tanggal_pre_order", "no_antrian_pre_order", "catatan_pesanan", "id_status_pesanan"]
+                for row in data:
+                    table.add_row(row)
+                print(table)
+
+                id_admin = int(input("Masukkan ID Admin: "))
+                id_customer = int(input("Masukkan ID Customer: "))
+                id_jenis_pembayaran = int(input("Masukkan ID Jenis Pembayaran: "))
+                tanggal_pre_order = input("Masukkan Tanggal Pre-order: ")
+                no_antrian_pre_order = int(input("Masukkan Nomor Antrian Pre-order: "))
+                catatan_pesanan = input("Masukkan Catatan Pesanan: ")
+                id_status_pesanan = int(input("Masukkan ID Status Pesanan: "))
+
+                query = """
+                    INSERT INTO pre_order (id_admin, id_customer, id_jenis_pembayaran, tanggal_pre_order, no_antrian_pre_order, catatan_pesanan, id_status_pesanan)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s)
+                    RETURNING id_pre_order
+                """
+                cur.execute(query, (id_admin, id_customer, id_jenis_pembayaran, tanggal_pre_order, no_antrian_pre_order, catatan_pesanan, id_status_pesanan))
+                id_pre_order = cur.fetchone()[0]
+                conn.commit()
+                return id_pre_order
+            tambah_preorder()
+        if Masuk2 == "2":
+            Clear()
+            def hapus_preorder(cur, conn):
+                query = "SELECT id_admin, id_customer, id_jenis_pembayaran, tanggal_pre_order, no_antrian_pre_order, catatan_pesanan, id_status_pesanan FROM pre_order"
+                cur.execute(query)
+                data = cur.fetchall()
+
+                table = PrettyTable()
+                table.field_names = ["id_admin", "id_customer", "id_jenis_pembayaran", "tanggal_pre_order", "no_antrian_pre_order", "catatan_pesanan", "id_status_pesanan"]
+                for row in data:
+                    table.add_row(row)
+                print(table)
+
+                id_pre_order = int(input("Masukkan ID Pre-order yang ingin dihapus: "))
+                query = "DELETE FROM pre_order WHERE id_pre_order = %s"
+                cur.execute(query, (id_pre_order,))
+                conn.commit()
+            hapus_preorder()
+        if Masuk2 == "3":
+            Clear()
+            def lihat_preorder(cur, conn, id_pre_order=None):
+                if not id_pre_order:
+                    id_pre_order = int(input("Masukkan ID Pre-order yang ingin dilihat : "))
+
+                if id_pre_order:
+                    query = "SELECT * FROM pre_order WHERE id_pre_order = %s"
+                    cur.execute(query, (id_pre_order,))
+                else:
+                    query = "SELECT * FROM pre_order"
+                    cur.execute(query)
+    
+                preorder = cur.fetchall()
+                return preorder
+            lihat_preorder()
+            
+        else:
+            Clear()
+            Halaman_user()
     elif Masuk == "2":
         pass
     elif Masuk == "3":
@@ -175,6 +202,7 @@ def Halaman_admin():
     print(" ==  [4]   Update pesanan                                  == ")
     print(" ==  [5]   Menghapus bagian produk                         == ")
     print(" ==  [6]   Melihat riwayat pembelian                       == ")
+    print(" ==  [7]   Menambahkan jenis pembayaran                    == ")
     print(" ==  [0]   OUT                                             == ")
     print(" ============================================================ ")
     Masuk = input(" == Halaman masuk :")
@@ -323,21 +351,399 @@ def Halaman_admin():
                 Halaman_admin()
         Tambah_Produk()
     elif Masuk == "2":
-        pass
+        Clear()
+        def Riwayat_TP():
+            print(" ============================================================ ")
+            print(" ==                                                        == ")
+            print(" ==                 INFORMASI PEMBELIAN                    == ")
+            print(" ==             [1]PREORDER [2]ORDER [0]OUT                == ")
+            print(" ==                                                        == ")
+            print(" ============================================================ ")
+            Info = input("Pilihlah angka untuk melanjutkan : ")
+            if Info == "1":
+                def riwayat_order_admin():
+                    print("\n========= Riwayat Order Admin=========\n")
+                    query_order = "SELECT d.id_detail_order, c.nama_customer, o.tanggal_order, sp.status_pesanan, p.produk, p.harga, d.jumlah_order, (p.harga*d.jumlah_order) as total_pembayaran, jp.jenis_pembayaran, c.alamat " \
+                    "FROM orders o " \
+                    "JOIN customer c ON(c.id_customer = o.id_customer) " \
+                    "JOIN jenis_pembayaran jp ON(jp.id_jenis_pembayaran = o.id_jenis_pembayaran) " \
+                    "JOIN status_pesanan sp ON(sp.id_status_pesanan = o.id_status_pesanan) " \
+                    "JOIN detail_order d ON(d.id_order = o.id_order) " \
+                    "JOIN produk p ON(p.id_produk = d.id_produk) " \
+                    "ORDER BY o.tanggal_order ASC "  
+
+                    cur.execute(query_order)
+                    data = cur.fetchall()
+
+                    table = PrettyTable()
+                    table.field_names = ["ID Detail Order", "Nama Customer", "Tanggal Order", "Status Pesanan", "Produk", "Harga Produk", "Jumlah Order", "Total Pembayaran", "Jenis Pembayaran", "Alamat"]
+                        
+                    for row in data:
+                        table.add_row(row)
+                        
+                        Clear()
+                        print(table)
+
+                        cur.close()
+                        conn.close()
+                riwayat_order_admin()
+                Riwayat_TP()
+            elif Info == "2":
+                def riwayat_pre_order_admin():
+                    print("\n========= Riwayat Pre Order Admin=========\n")
+                    query_pre_order = "SELECT dp.id_detail_pre_order, c.nama_customer, po.tanggal_pre_order, sp.status_pesanan, p.produk, p.harga, dp.jumlah_pre_order, po.catatan_pesanan, (p.harga*dp.jumlah_pre_order) as total_pembayaran, jp.jenis_pembayaran, c.alamat " \
+                                    "FROM pre_order po " \
+                                    "JOIN customer c ON(c.id_customer = po.id_customer) " \
+                                    "JOIN jenis_pembayaran jp ON(jp.id_jenis_pembayaran = po.id_jenis_pembayaran) " \
+                                    "JOIN status_pesanan sp ON(sp.id_status_pesanan = po.id_status_pesanan) " \
+                                    "JOIN detail_pre_order dp ON(dp.id_pre_order = po.id_pre_order) " \
+                                    "JOIN produk p ON(p.id_produk = dp.id_produk) " \
+                                    "ORDER BY po.tanggal_pre_order ASC "  
+
+                    cur.execute(query_pre_order)
+                    data = cur.fetchall()
+
+                    table = PrettyTable()
+                    table.field_names = ["ID Detail Pre Order", "Nama Customer", "Tanggal Pre Order", "Status Pesanan", "Produk", "Harga Produk", "Jumlah Pre Order", "Catatan Pesanan", "Total Pembayaran", "Jenis Pembayaran", "Alamat"]
+                        
+                    for row in data:
+                        table.add_row(row)
+                        
+                        Clear()
+                        print(table)
+
+                        cur.close()
+                        conn.close()
+
+                Clear()
+                riwayat_pre_order_admin()
+                Halaman_admin()
+            else :
+                Clear()
+                Halaman_admin()
     elif Masuk == "3":
-        pass
+        Clear()
+        def Update_Bagian():
+            print(" ============================================================ ")
+            print(" ==                                                        == ")
+            print(" ==                 UPDATE BAGIAN PRODUK                   == ")
+            print(" ==            [1]PRODUK [2]JENIS [3]VARIAN [0] Out        == ")
+            print(" ==                                                        == ")
+            print(" ============================================================ ")
+            Masuk_Update = input("Masukkan nomor sesuai dengan bagian yang ingin diupdate: ")
+            if Masuk_Update == "1":
+                Clear()
+                query = "SELECT * FROM produk"
+                cur.execute(query)
+                data = cur.fetchall()
+                nama_kolom = ["id_produk","Produk","Harga","Kadaluarsa","Gambar_Produk","id_jenis_produk"]
+                df= pd.DataFrame(data,columns=nama_kolom)
+                print(df)
+
+                ngubah_produk = input(f"Masukkan nama produk: ") 
+                id_produk = input(f'Masukkan id varinya :')
+                query_mengubah = f"UPDATE produk SET produk = '{ngubah_produk}' WHERE id_produk = %s"
+                kolom=(id_produk) 
+                cur.execute(query_mengubah,kolom)
+                conn.commit()
+                print("========== Data berhasil diupdate ==========")
+                Update_Bagian()
+            elif Masuk_Update == "2":
+                Clear()
+                query = "SELECT * FROM jenis_produk"
+                cur.execute(query)
+                data = cur.fetchall()
+                nama_kolom = ["id_jenis_produk","jenis_produk"]
+                df= pd.DataFrame(data,columns=nama_kolom)
+                print(df)
+
+                ngubah_jenis = input(f"Masukkan Nama Jenis Produk: ") 
+                id_varian = input(f'Masukkan idnya :')
+                query_mengubah = f"UPDATE jenis_produk SET jenis_produk = '{ngubah_jenis}' WHERE id_jenis_produk = %s"
+                kolom=(id_varian) 
+                cur.execute(query_mengubah,kolom)
+                conn.commit()
+                print("========== Data berhasil diupdate ==========")
+                
+                Update_Bagian()
+            elif Masuk_Update == "3":
+                Clear()
+                query = "SELECT * FROM varian_produk"
+                cur.execute(query)
+                data = cur.fetchall()
+                nama_kolom = ["id_varian_produk","varian_produk"]
+                df= pd.DataFrame(data,columns=nama_kolom)
+                print(df)
+
+                ngubah_varian = input(f"Masukkan nama varian: ") 
+                id_varian = input(f'Masukkan idnya :')
+                query_mengubah = f"UPDATE varian_produk SET varian_produk = '{ngubah_varian}' WHERE id_varian_produk = %s"
+                kolom=(id_varian) 
+                cur.execute(query_mengubah,kolom)
+                conn.commit()
+                print("========== Data berhasil diupdate ==========")
+
+                Update_Bagian()
+            elif Masuk_Update == "0":
+                Clear()
+                print("Mohon sesuaikan data anda")
+                Update_Bagian()
+            else: 
+                Clear()
+                Halaman_admin()
     elif Masuk == "4":
-        pass
+        Clear()
+        def Perbarui_Status():
+            print(" ============================================================ ")
+            print(" ==                                                        == ")
+            print(" ==                     PERBARUI STATUS                    == ")
+            print(" ==  [1]STATUS ORDER [2]STATUS PRE ORDER [3]JENIS [0] Out  == ")
+            print(" ==                                                        == ")
+            print(" ============================================================ ")
+            PS=input("Perbarui Status: ")
     elif Masuk == "5":
-        pass
+        Clear()
+        def Menghapus():
+            print(" ============================================================ ")
+            print(" ==                                                        == ")
+            print(" ==                 HAPUS BAGIAN PRODUK                    == ")
+            print(" ==            [1]PRODUK [2]VARIAN [3]JENIS [0] Out        == ")
+            print(" ==                                                        == ")
+            print(" ============================================================ ")
+            Hapus_tertentu = input("Masukkan nomor sesuai dengan nomor yang ingin dihapus: ")
+            if Hapus_tertentu == "1":
+                def read_Admin_menghapus_produk():
+                    Clear()
+                    def Melihat_produk(cur):
+                        print(" ============================================================ ")
+                        print("  --         Hapus produk yang tidak tersedia             -- ")
+                        print(" ============================================================ ")
+                        mytable =PrettyTable(["Id  produk", "Nama produk"," Harga "," Kadaluarsa ","Gambar produk", "Jenis produk"])
+                        query = "select p.id_produk, p.produk, p.harga, TO_CHAR(p.kadaluarsa :: DATE,'dd-mm-yyyy'),p.gambar_produk, j.jenis_produk from produk p join jenis_produk j on (p.id_jenis_produk=j.id_jenis_produk)"
+                        # query = "select p.id_produk, p.produk, p.harga, TO_CHAR(p.kadaluarsa :: DATE,'dd-mm-yyyy'),p.gambar_produk,
+                        # j.jenis_produk from produk p join jenis_produk j on (p.id_jenis_produk=j.id_jenis_produk)"
+                        cur.execute(query)
+                        data = cur.fetchall()
+                        for i in data:
+                            mytable.add_row(i)
+                        print(mytable)
+                        print(" ============================================================ ")
+                    Melihat_produk(cur)
+                    while True:
+                        id_van = input("Id produk yang ingin dihapus  : ")
+                        query_delete = f"DELETE FROM produk produk WHERE id_produk = '{id_van}'"
+                        try : 
+                            cur.execute(query_delete)
+                            conn.commit()
+                            cur.close()
+                            conn.close()
+                            rows_deleted = cur.rowcount
+                            if rows_deleted > 0 :
+                                Clear()
+                                print(" ============================================================ ")
+                                print("               Anda berhasil menghapus varian produk")
+                                print(" ============================================================ ")
+                                break
+                            else :
+                                Clear()
+                                print(" ============================================================ ")
+                                print(" Mohon maaf data yang anda inputkan sedang terikat dengan ")
+                                print(" data yang lainnya, Harap hapus data yang sedang tak terikat")
+                                print(" ============================================================ ")
+                                break
+                        except psycopg2.Error or Exception:
+                            Clear()
+                            print(" ============================================================ ")
+                            print(" ==  Terdapat kesalahan menghapus                             ")
+                            print(" ============================================================ ")
+                            print(" ==  Mohon memasukkan data anda dengan benar ")
+                            print(" ============================================================ ")
+                            break
+                    read_Admin_menghapus_produk()
+            elif Hapus_tertentu == "3":
+                def read_Admin_menghapus_jenis():
+                    Clear()
+                    def Melihat_jenis_produk(cur):
+                        print(" ============================================================ ")
+                        print("  --           Hapus jenis yang tidak digunakan            -- ")
+                        print(" ============================================================ ")
+                        mytable =PrettyTable([" Id jenis produk ", " Nama jenis produk "])
+                        query = "SELECT * FROM jenis_produk"
+                        cur.execute(query)
+                        data = cur.fetchall()
+                        for i in data:
+                            mytable.add_row(i)
+                        print(mytable)
+                        print(" ============================================================ ")
+                    Melihat_jenis_produk(cur)
+                    while True:
+                        id_jen = input("Nomor jenis yang ingin dihapus  : ")
+                        query_delete = f"DELETE FROM jenis_produk jenis_produk WHERE id_jenis_produk = '{id_jen}'"
+                        try : 
+                            cur.execute(query_delete)
+                            conn.commit()
+                            cur.close()
+                            conn.close()
+                            rows_deleted = cur.rowcount
+                            if rows_deleted > 0 :
+                                Clear()
+                                print(" ============================================================ ")
+                                print("               Anda berhasil menghapus jenis produk")
+                                print(" ============================================================ ")
+                                break
+                            else :
+                                Clear()
+                                print(" ============================================================ ")
+                                print(" Mohon maaf data yang diinputkan tidak ada,")
+                                print(" Harap memasukkan data anda dengan benar")
+                                print(" ============================================================ ")
+                                break
+                        except psycopg2.Error or Exception:
+                            Clear()
+                            print(" ============================================================ ")
+                            print(" ==  Terdapat kesalahan menghapus, data bersifat terikat      ")
+                            print(" ============================================================ ")
+                            print(" ==  Mohon memasukkan data yang tidak terpakai                ")
+                            print(" ============================================================ ")
+                            break
+                    read_Admin_menghapus_jenis()
+            elif Hapus_tertentu == "2":
+                def read_Admin_menghapus_varian():
+                    Clear()
+                    def Melihat_varian_produk(cur):
+                        print(" ============================================================ ")
+                        print("  --         Hapus varian yang tidak digunakan             -- ")
+                        print(" ============================================================ ")
+                        mytable =PrettyTable([" Id varian produk ", " Nama varian produk "])
+                        query = "SELECT * FROM varian_produk"
+                        cur.execute(query)
+                        data = cur.fetchall()
+                        for i in data:
+                            mytable.add_row(i)
+                        print(mytable)
+                        print(" ============================================================ ")
+                    Melihat_varian_produk(cur)
+                    while True:
+                        id_van = input("Nomor varian yang ingin dihapus  : ")
+                        query_delete = f"DELETE FROM varian_produk varian_produk WHERE id_varian_produk = '{id_van}'"
+                        try : 
+                            cur.execute(query_delete)
+                            conn.commit()
+                            cur.close()
+                            conn.close()
+                            rows_deleted = cur.rowcount
+                            if rows_deleted > 0 :
+                                Clear()
+                                print(" ============================================================ ")
+                                print("               Anda berhasil menghapus varian produk")
+                                print(" ============================================================ ")
+                                break
+                            else :
+                                Clear()
+                                print(" ============================================================ ")
+                                print(" Mohon maaf data yang anda inputkan sedang terikat dengan ")
+                                print(" data yang lainnya, Harap hapus data yang sedang tak terikat")
+                                print(" ============================================================ ")
+                                break
+                        except psycopg2.Error or Exception:
+                            Clear()
+                            print(" ============================================================ ")
+                            print(" ==  Terdapat kesalahan menghapus                             ")
+                            print(" ============================================================ ")
+                            print(" ==  Mohon memasukkan data anda dengan benar ")
+                            print(" ============================================================ ")
+                            break
+                read_Admin_menghapus_varian()
+                
+            else :
+                Clear()
+                Halaman_admin()
     elif Masuk == "6":
         pass
+    elif Masuk == "7":
+        Clear()
+        def Menu():
+            Clear()
+            print ("\u001b[33m+==============================+")
+            print ("|        MENAMBAH JENIS PEMBAYARAN      |")
+            print ("+==============================+\u001b[0m")
+            Pilih = input ("\u001b[33m|1. Masukkan Jenis Pembayaran  |\n|2. Hapus Jenis Pembayaran     |\n|0. Keluar                     |\n\nPilih : \u001b[0m")
+            print ('\u001b='*20)
+
+            if Pilih == '1':
+                query = "SELECT * FROM jenis_pembayaran"
+                cur.execute(query)
+                data = cur.fetchall()
+
+                table = PrettyTable()
+                table.field_names = ["id_jenis_pembayaran", "jenis_pembayaran"]
+                for row in data:
+                    table.add_row(row)
+                print(table)
+
+                    # Meminta input dari pengguna
+                input_id_jenis_pembayaran = int(input("Masukkan Idnya : "))
+                input_jenis_pembayaran = input("Masukkan Jenis Pembayaran\n ex : Dana, ShopeePay : ")
+                input_kolom1 = input("Masukkan Nama Kolom Pertama: ")
+                input_kolom2 = input("Masukkan Nama Kolom Kedua: ")
+                input_kolom3 = input("Masukkan Nama Kolom Ketiga: ")
+
+            #         # Buat tabel baru
+                table_name = input("Masukkan Nama Tabel Baru: ")
+                create_table_query = f"CREATE TABLE IF NOT EXISTS {table_name} (id_jenis_pembayaran INTEGER NOT NULL, {input_kolom1} VARCHAR(50) NOT NULL, {input_kolom2} VARCHAR(50) NOT NULL, {input_kolom3} VARCHAR(50) NOT NULL)"
+                cur.execute(create_table_query)
+                conn.commit()
+
+            #         # Insert data ke tabel jenis_pembayaran
+                query = "INSERT INTO jenis_pembayaran (id_jenis_pembayaran, jenis_pembayaran) VALUES (%s,%s)"
+                cur.execute(query, (input_id_jenis_pembayaran, input_jenis_pembayaran))
+                conn.commit()
+
+            #         # Menampilkan data jenis_pembayaran setelah penambahan
+                query = "SELECT * FROM jenis_pembayaran"
+                cur.execute(query)
+                data = cur.fetchall()
+
+                table = PrettyTable()
+                table.field_names = ["id_jenis_pembayaran", "jenis_pembayaran"]
+                for row in data:
+                    table.add_row(row)
+                print(table)
+
+                if Pilih == '2':
+                    print ('='*20)
+                    query = "SELECT * FROM jenis_pembayaran"
+                    cur.execute(query)
+                    data = cur.fetchall()
+                    table = PrettyTable()
+                    table.field_names = ["id_jenis_pembayaran", "jenis_pembayaran"]
+                    for row in data:
+                        table.add_row(row)
+                    print(table)
+                    print("Hapus Jenis Pembayaran")
+                    input_id_jenis_pembayaran = int(input("Masukkan ID Jenis Pembayaran yang akan dihapus : "))
+                    query_delete = f"DELETE FROM jenis_pembayaran WHERE id_jenis_pembayaran = {input_id_jenis_pembayaran}"
+                    cur.execute(query_delete)
+                    conn.commit()
+                    query = "SELECT * FROM jenis_pembayaran"
+                    cur.execute(query)
+                    data = cur.fetchall()
+                    table = PrettyTable()
+                    table.field_names = ["id_jenis_pembayaran", "jenis_pembayaran"]
+                    for row in data:
+                        table.add_row(row)
+                    print(table)
+
+                elif Pilih == '0':
+                    cur.close()
+                    conn.close()
+            Menu()
     elif Masuk == "0":
-        Clear()
+            Clear()
     else :
-        Clear()
-        print("Harap menginputkan data dengan benar")
-        Halaman_user()
+            Clear()
+            print("Harap menginputkan data dengan benar")
+            Halaman_user()
 
 def Login():  
     print(" \u001b[31m============================================================ ")
