@@ -148,7 +148,76 @@ def Halaman_user():
         print(" ==   [1] RIWAYAT ORDERAN [2] RIWAYAT PREORDER [3] OUT     == ")
         print(" ==                                                        == ")
         print(" ============================================================ ")
-        
+        while True:
+            Masuk2 = input(" Halaman masuk :")
+            if Masuk2 == "1":
+                def riwayat_order_customer():
+                    print("\n========= Riwayat Order Customer =========\n")
+                    nama_customer = input("Masukkan nama customer : ")
+                    query_order = "SELECT d.id_detail_order, c.nama_customer, o.tanggal_order, sp.status_pesanan, p.produk, p.harga, d.jumlah_order, (p.harga*d.jumlah_order) as total_pembayaran, jp.jenis_pembayaran, c.alamat " \
+                                "FROM orders o " \
+                                "JOIN customer c ON(c.id_customer = o.id_customer) " \
+                                "JOIN jenis_pembayaran jp ON(jp.id_jenis_pembayaran = o.id_jenis_pembayaran) " \
+                                "JOIN status_pesanan sp ON(sp.id_status_pesanan = o.id_status_pesanan) " \
+                                "JOIN detail_order d ON(d.id_order = o.id_order) " \
+                                "JOIN produk p ON(p.id_produk = d.id_produk) " \
+                                "WHERE c.nama_customer = %s" \
+                                "ORDER BY o.tanggal_order ASC " 
+
+                    cur.execute(query_order, (nama_customer,))
+                    data = cur.fetchall()
+                        
+                    if not data:
+                        print(f"Data administrasi untuk nama customer {nama_customer} tidak ditemukan")
+                    else:
+                        table = PrettyTable()
+                        table.field_names = ["ID Detail Order", "Nama Customer", "Tanggal Order", "Status Pesanan", "Produk", "Harga Produk", "Jumlah Order", "Total Pembayaran", "Jenis Pembayaran", "Alamat"]
+                            
+                    for row in data:
+                        table.add_row(row)
+                            
+                        Clear()
+                        print(table)
+
+                        cur.close()
+                        conn.close()
+                riwayat_order_customer()
+                Masuk2 = input(" Halaman masuk :")
+            elif Masuk2 == "2":
+                def riwayat_pre_order_customer():
+                    print("\n========= Riwayat Pre Order Customer=========\n")
+                    nama_customer = input("Masukkan nama customer : ")
+                    query_pre_order = "SELECT dp.id_detail_pre_order, c.nama_customer, po.tanggal_pre_order, sp.status_pesanan, p.produk, p.harga, dp.jumlah_pre_order, po.catatan_pesanan, (p.harga*dp.jumlah_pre_order) as total_pembayaran, jp.jenis_pembayaran, c.alamat " \
+                                        "FROM pre_order po " \
+                                        "JOIN customer c ON(c.id_customer = po.id_customer) " \
+                                        "JOIN jenis_pembayaran jp ON(jp.id_jenis_pembayaran = po.id_jenis_pembayaran) " \
+                                        "JOIN status_pesanan sp ON(sp.id_status_pesanan = po.id_status_pesanan) " \
+                                        "JOIN detail_pre_order dp ON(dp.id_pre_order = po.id_pre_order) " \
+                                        "JOIN produk p ON(p.id_produk = dp.id_produk) " \
+                                        "WHERE c.nama_customer = %s" \
+                                        "ORDER BY po.tanggal_pre_order ASC "
+                    
+                    cur.execute(query_pre_order, (nama_customer,))
+                    data = cur.fetchall()
+                        
+                    if not data:
+                        print(f"Data administrasi untuk nama customer {nama_customer} tidak ditemukan")
+                    else:
+                        table = PrettyTable()
+                        table.field_names = ["ID Detail Pre Order", "Nama Customer", "Tanggal Pre Order", "Status Pesanan", "Produk", "Harga Produk", "Jumlah Pre Order", "Catatan Pesanan", "Total Pembayaran", "Jenis Pembayaran", "Alamat"]
+                        
+                    for row in data:
+                        table.add_row(row)
+                        
+                        Clear()
+                        print(table)
+
+                        cur.close()
+                        conn.close()
+                riwayat_pre_order_customer()
+            else:
+                Clear()
+                Halaman_user()
     elif Masuk == "4":
         pass
     elif Masuk == "5":
@@ -775,7 +844,7 @@ def Login():
             print(" ==  █▄▄ █▄█ █▄█ █ █░▀█   █▄▄ █▄█ ▄█ ░█░ █▄█ █░▀░█ ██▄ █▀▄ ==")
             print(" ==                                                        == ")
             print(" ============================================================\u001b[0m ")
-            username = input("Masukkan Username anda : ")
+            username = input("Masukkan nama lengkap anda : ")
             password=input("Masukkan password anda : ")
             query = f"SELECT * FROM customer WHERE nama_customer = %s AND password_customer = %s"
             cur.execute(query, (username, password))
