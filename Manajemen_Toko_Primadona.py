@@ -10,6 +10,12 @@ date_time = now.strftime("%Y-%m-%d")
 conn = psycopg2.connect(database='Primadona_Toko',user='postgres', password='Raffi20005..', host='localhost', port=5432)
 cur = conn.cursor()
 
+import datetime
+
+current_time = datetime.datetime.now()
+formatted_time = current_time.strftime('%Y-%m-%d %H:%M:%S')
+
+
 # # Mengimport sistem fitur Clear()
 import os
 # # Mengimport pandas 
@@ -23,7 +29,7 @@ def Clear():
         print("\033[2J\033[;H")
     elif platform.system() == "Windows":
         os.system("cls")
-        
+        ## Halaman User
 def Halaman_user():
     print(" ============================================================ ")
     print(" ==                                                        == ")
@@ -47,14 +53,63 @@ def Halaman_user():
     print(" ==  [1]   Order produk                                    == ")
     print(" ==  [2]   Membeli pre order                               == ")
     print(" ==  [3]   Riwayat Pembelian                               == ")
-    print(" ==  [4]   Searching produk                                == ")
+    print(" ==  [4]   Hapus Pembelian                                 == ")
     print(" ==  [5]   Feedback                                        == ")
     print(" ==  [0]   OUT                                             == ")
     print(" ==  [ Untuk masuk inputkan berdasarkan angka ]            == ")
     print(" ============================================================ ")
     Masuk = input(" == Halaman masuk :")
     if Masuk == "1":
-        pass
+        Clear()
+        # def Order_produk():
+        #     print(" ============================================================ ")
+        #     query = "select TO_CHAR(NOW(),'Tanggal : [ DD-MM-YYYY ],             [  HH.MI  ]') from produk limit 1"
+        #     cur.execute(query)
+        #     data = cur.fetchall()
+        #     for i in (data):
+        #         print(f" == {i} ==")
+        #     print(" ============================================================ ")
+        #     mytable =PrettyTable(["Nomor produk"," Nama produk ", " Harga produk ", "EXP", "Jenis produk"])
+        #     query = "select p.id_produk,p.produk, p.harga, TO_CHAR(p.kadaluarsa :: DATE,'dd-mm-yyyy'), jp.jenis_produk from produk p join jenis_produk jp on (p.id_jenis_produk = jp.id_jenis_produk) where p.ketersediaan_produk = '1'"
+        #     cur.execute(query)
+        #     data = cur.fetchall()
+        #     for i in data:
+        #         mytable.add_row(i)
+        #     print( mytable )
+        #     print(" ==================== MACAM VARIAN ========================== ")
+        #     mytable =PrettyTable(["Id Varian produk"," Varian produk "])
+        #     query = "select id_varian_produk, varian_produk from varian_produk "
+        #     cur.execute(query)
+        #     data = cur.fetchall()
+        #     for i in data:
+        #         mytable.add_row(i)
+        #     print(mytable)
+        #     print(" =================== MACAM PEMBAYARAN =======================")
+        #     mytable =PrettyTable(["Nomor Jenis Pembayaran"," Jenis Pembayaran "])
+        #     query = "select id_detail_order, varian_produk from varian_produk "
+        #     cur.execute(query)
+        #     data = cur.fetchall()
+        #     for i in data:
+        #         mytable.add_row(i)
+        #     print(mytable)
+        #     print(" ============================================================ ")
+            # Ingin_Beli=input("Apakah kamu ingin beli [Y][T]: ")
+            # if Ingin_Beli == "Y":
+            #     try :
+                        
+            #             Clear()
+            #             print(" Anda berhasil menambahkan produk")
+            #             Halaman_admin()
+            #     except:
+            #             Clear()
+            #             print("Mohon maaf data yang anda inputkan salah")
+            #             Halaman_admin()
+            # elif Ingin_Beli == "T":
+            #     Clear()
+            #     Halaman_user()
+            # else :
+            #     Clear()
+            #     Order_produk()
     elif Masuk == "2":
         pass
     elif Masuk == "3":
@@ -62,7 +117,39 @@ def Halaman_user():
     elif Masuk == "4":
         pass
     elif Masuk == "5":
-        pass
+        def Feedback():
+            Clear()
+            print(" ============================================================ ")
+            print(" ==                                                        == ")
+            print(" ==        FEEDBACK WEBSITE TOKO PRIMADONA JEMBER          == ")
+            print(" ==                                                        == ")
+            print(" ============================================================ ")
+            mytable =PrettyTable(["Nama pengguna"," Tanggal ", " Komentar "])
+            query = "select c.nama_customer, TO_CHAR(f.tanggal_feedback :: DATE,'dd-mm-yyyy'), f.komentar from feedback f join customer c on (f.id_customer = c.id_customer)"
+            cur.execute(query)
+            data = cur.fetchall()
+            for i in data:
+                mytable.add_row(i)
+            print( mytable )
+            print(" ============================================================ ")
+            Mau_Feedback=input('Apakah kamu ingin memeasukkan Feedback [Y][T]: ')
+            if Mau_Feedback == "Y":
+                try :
+                    Feedback_saya= input("Saran dan komentar anda: ")
+                    query = f"INSERT INTO feedback (tanggal_feedback,komentar, id_customer) VALUES ('{formatted_time}', '{Feedback_saya}', {user_id})"
+                    cur.execute(query, (formatted_time, Feedback_saya, user_id))
+                    conn.commit()
+                    Clear()
+                    print(" Anda berhasil menambahkan produk")
+                    Halaman_user()
+                except:
+                        Clear()
+                        print("Mohon maaf saat ini kami tidak menerima respon")
+                        Halaman_user()
+            else :
+                Feedback()
+                print(" Masukkan berdasarkan printah")
+        Feedback()
     elif Masuk == "0":
         Clear()
     else :
@@ -174,7 +261,7 @@ def Halaman_admin():
                 print(" ==                                   [1] Tambah [0] Out   == ")
                 print(" ============================================================ ")
                 mytable =PrettyTable(["Id produk"," Jenis produk "])
-                query = "select id_jenis_produk, jenis_produk from produk "
+                query = "select id_jenis_produk, jenis_produk from jenis_produk "
                 cur.execute(query)
                 data = cur.fetchall()
                 for i in data:
@@ -183,19 +270,31 @@ def Halaman_admin():
                 print(" ============================================================ ")
                 Lanjutkan = input("Pilihan anda: ")
                 if Lanjutkan == "1":
-                    pass
+                    try:
+                        jenis_produk = input("Input jenis produk : ")
+                        query = f"INSERT INTO jenis_produk (jenis_produk) VALUES ('{jenis_produk}')"
+                        cur.execute(query, (jenis_produk))
+                        conn.commit()
+                        Clear()
+                        print(" Anda berhasil menambahkan produk")
+                        Halaman_admin()
+                    except:
+                        Clear()
+                        print("Mohon maaf data yang anda inputkan salah")
+                        Halaman_admin()
                 else:
                     Clear()
                     Tambah_Produk()
                 
             elif Mau_Tambah == "3":
+                Clear()
                 print(" ============================================================ ")
                 print(" ==                                                        == ")
                 print(" ==             MENAMBAH VARIAN PRODUK                     == ")
                 print(" ==                                   [1] Tambah [0] Out   == ")
                 print(" ============================================================ ")
                 mytable =PrettyTable(["Id Varian produk"," Varian produk "])
-                query = "select id_varian_produk, varian_produk from produk "
+                query = "select id_varian_produk, varian_produk from varian_produk "
                 cur.execute(query)
                 data = cur.fetchall()
                 for i in data:
@@ -204,8 +303,18 @@ def Halaman_admin():
                 print(" ============================================================ ")
                 Lanjutkan = input("Pilihan anda: ")
                 if Lanjutkan == "1":
-                    
-                    pass
+                    try:
+                        varian_produk = input("Input varian produk : ")
+                        query = f"INSERT INTO varian_produk (varian_produk) VALUES ('{varian_produk}')"
+                        cur.execute(query, (varian_produk))
+                        conn.commit
+                        Clear()
+                        print(" Anda berhasil menambahkan produk")
+                        Halaman_admin()
+                    except:
+                        Clear()
+                        print("Mohon maaf data yang anda inputkan salah")
+                        Halaman_admin()
                 else:
                     Clear()
                     Tambah_Produk()
