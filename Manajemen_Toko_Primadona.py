@@ -219,7 +219,26 @@ def Halaman_user():
                 Clear()
                 Halaman_user()
     elif Masuk == "4":
-        pass
+        print(" ============================================================ ")
+        print(" ==                                                        == ")
+        print(" ==              PROFIL TOKO PRIMADONA JEMBER              == ")
+        print(" ==                                                        == ")
+        print(" ============================================================ ")
+        # query = "SELECT * FROM produk"
+        # cur.execute(query)
+        # data = cur.fetchall()
+        # nama_kolom = ["id_produk","Produk","Harga","Kadaluarsa","Gambar_Produk","id_jenis_produk"]
+        # df= pd.DataFrame(data,columns=nama_kolom)
+        # print(df)
+
+        #         ngubah_produk = input(f"Masukkan nama produk: ") 
+        #         id_produk = input(f'Masukkan id varinya :')
+        #         query_mengubah = f"UPDATE produk SET produk = '{ngubah_produk}' WHERE id_produk = %s"
+        #         kolom=(id_produk) 
+        #         cur.execute(query_mengubah,kolom)
+        #         conn.commit()
+        #         print("========== Data berhasil diupdate ==========")
+        #         Update_Bagian()
     elif Masuk == "5":
         def Feedback():
             Clear()
@@ -464,7 +483,6 @@ def Halaman_admin():
                         cur.close()
                         conn.close()
                 riwayat_order_admin()
-                Riwayat_TP()
             elif Info == "2":
                 def riwayat_pre_order_admin():
                     print("\n========= Riwayat Pre Order Admin=========\n")
@@ -498,6 +516,7 @@ def Halaman_admin():
             else :
                 Clear()
                 Halaman_admin()
+        Riwayat_TP()
     elif Masuk == "3":
         Clear()
         def Update_Bagian():
@@ -568,6 +587,7 @@ def Halaman_admin():
             else: 
                 Clear()
                 Halaman_admin()
+        Update_Bagian()
     elif Masuk == "4":
         Clear()
         def Perbarui_Status():
@@ -577,7 +597,8 @@ def Halaman_admin():
             print(" ==  [1]STATUS ORDER [2]STATUS PRE ORDER [3]JENIS [0] Out  == ")
             print(" ==                                                        == ")
             print(" ============================================================ ")
-            PS=input("Perbarui Status: ")
+            print(f" {user_id}")
+        Perbarui_Status()
             
     elif Masuk == "5":
         Clear()
@@ -736,6 +757,7 @@ def Halaman_admin():
             else :
                 Clear()
                 Halaman_admin()
+        Menghapus()
     elif Masuk == "6":
         pass
     elif Masuk == "7":
@@ -844,7 +866,7 @@ def Login():
             print(" ==  █▄▄ █▄█ █▄█ █ █░▀█   █▄▄ █▄█ ▄█ ░█░ █▄█ █░▀░█ ██▄ █▀▄ ==")
             print(" ==                                                        == ")
             print(" ============================================================\u001b[0m ")
-            username = input("Masukkan nama lengkap anda : ")
+            username = input("Masukkan username anda : ")
             password=input("Masukkan password anda : ")
             query = f"SELECT * FROM customer WHERE nama_customer = %s AND password_customer = %s"
             cur.execute(query, (username, password))
