@@ -62,10 +62,12 @@ def Halaman_user():
     print(" ==  [ Untuk masuk inputkan berdasarkan angka ]            == ")
     print(" ============================================================ ")
     Masuk = input(" == Halaman masuk :")
-    if Masuk == "1":
+    if Masuk == "2":
         print(" ============================================================ ")
-        print(" ==  [1]   Order produk                                    == ")
+        print(" ==  [1]   Pre Order produk                                == ")
         print(" ==  [2]   Hapus Order                                     == ")
+        print(" ==  [3]   Lihat Pre order                                 == ")
+        print(" ==  [0]   Out                                             == ")
         print(" ============================================================ ")
         Masuk2 = input("== Halaman masuk ==")
         if Masuk2 == "1":
@@ -133,14 +135,20 @@ def Halaman_user():
                 preorder = cur.fetchall()
                 return preorder
             lihat_preorder()
-            
         else:
             Clear()
             Halaman_user()
-    elif Masuk == "2":
+    elif Masuk == "1":
         pass
     elif Masuk == "3":
-        pass
+        Clear()
+        print(" ============================================================ ")
+        print(" ==                                                        == ")
+        print(" ==        FEEDBACK WEBSITE TOKO PRIMADONA JEMBER          == ")
+        print(" ==   [1] RIWAYAT ORDERAN [2] RIWAYAT PREORDER [3] OUT     == ")
+        print(" ==                                                        == ")
+        print(" ============================================================ ")
+        
     elif Masuk == "4":
         pass
     elif Masuk == "5":
@@ -501,6 +509,7 @@ def Halaman_admin():
             print(" ==                                                        == ")
             print(" ============================================================ ")
             PS=input("Perbarui Status: ")
+            
     elif Masuk == "5":
         Clear()
         def Menghapus():
